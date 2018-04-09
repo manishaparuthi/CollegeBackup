@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1523298428 source:c:\users\tarun\desktop\codeblocks\test\main.cpp
+	<windows.h>
+	<stdlib.h>
+	"dictionary.h"
+	<cstring>
+	<iostream>
+
+1523304389 c:\users\tarun\desktop\codeblocks\test\dictionary.h
+	<iostream>
+	<cstring>
+

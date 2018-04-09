@@ -4,35 +4,16 @@
 using namespace std;
 #include<cstring>
 #define ALPHABET_SIZE 26
-
+#include "dictionary.h"
 // trie node
-class TrieNode
+
+TrieNode node;
+
+// Returns new trie node (initialized to NULLs)
+Trie::Trie()
 {
-
-    TrieNode* children[ALPHABET_SIZE];
-
-    // isEndOfWord is true if the node represents
-    // end of a word
-     bool isEndOfWord;
-     char* description;//value represents the meaning of the word
-    friend class Trie;
-
-
-};
-extern TrieNode node;
-class Trie
-{
-    TrieNode* root;
-    public:
-    Trie()
-    {
-        root=getNode();
-    }
-    TrieNode* getNode(void);
-    void insert( string key,char* meaning);
-    char* search( string key);
-};
-
+    root=getNode();
+}
 
 TrieNode* Trie :: getNode(void)
 {
