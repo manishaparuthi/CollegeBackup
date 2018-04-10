@@ -1,20 +1,30 @@
 #include <windows.h>
 #include<stdlib.h>
 #include "dictionary.h"
+#include "about.h"
+#include "instruction.h"
+#include "add.h"
+#include "search.h"
 #include<cstring>
 #include<iostream>
 using namespace std;
-#define FILE_MENU_NEW 1
-#define FILE_MENU_OPEN 2
-#define FILE_MENU_EXIT 3
-#define SUB_MENU_TITLE 4
+#define MENU_ABOUT 1
+#define MENU_INSTRUCTIONS 2
+#define MENU_EXIT 3
+#define MENU_ADD 4
+#define MENU_SEARCH 5
+#define MENU_DELETE 6
+#define OK 7
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 void AddMenus(HWND);
 void AddControls(HWND);
+void loadImages();
 HMENU hMenu;
-HWND hWord,hMeaning,hOut;
+HWND hWord,hMeaning,hLogo,hOut;
+HBITMAP hSearch,hDict;
 Trie dictionary;
+HINSTANCE hinst;
 /*  Make the class name into a global variable  */
 char szClassName[ ] = "Trie: Dictionary";
 
@@ -52,6 +62,10 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
         return 0;
 
     /* The class is registered, let's create the program*/
+    RegisterAboutClass(hThisInstance);
+    RegisterInstructionClass(hThisInstance);
+    RegisterAddClass(hThisInstance);
+
    hwnd= CreateWindowEx (
            0,                   /* Extended possibilites for variation */
            szClassName,         /* Classname */
@@ -84,6 +98,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
 }
 
 
+
 /*  This function is called by the Windows function DispatchMessage()  */
 
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -91,78 +106,65 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     switch (message)                  /* handle the messages */
     {
     case WM_CREATE:
+        loadImages();
         AddMenus(hwnd);
         AddControls(hwnd);
         break;
     case WM_COMMAND:
         switch(wParam)
         {
-            case FILE_MENU_EXIT:
-                //MessageBeep(MB_OK);
+            case MENU_EXIT:
                 DestroyWindow(hwnd);
                 break;
-            case FILE_MENU_NEW:
-                MessageBeep(MB_ICONINFORMATION);
-                //DestroyWindow(hwnd);
+            case MENU_ABOUT:
+                displayAbout(hwnd);
                 break;
-            case FILE_MENU_OPEN:
+            case MENU_INSTRUCTIONS:
+                displayInstruction(hwnd);
+                break;
+            case MENU_ADD:
+                displayAdd(hwnd);
                 MessageBeep(MB_OK);
-                //DestroyWindow(hwnd);
                 break;
-            case SUB_MENU_TITLE:
-                char name[30];
-                GetWindowText(hWord,name,30);
-                //char age[10];
-                char* out=dictionary.search(name);
-                SetWindowText(hMeaning,out);
-                //GetWindowText(hMeaning,age,10);
-                //char out[80];
-                //strcpy(out,name);
-                //strcat(out," is ");
-                //strcat(out,age);
-                //strcat(out," years old.");
-                SetWindowText(hOut,out);
+            case MENU_SEARCH:
+                MessageBeep(MB_OK);
                 break;
-        }
+            case MENU_DELETE:
+                MessageBeep(MB_OK);
+                break;
+            }
 
         break;
 
     case WM_DESTROY:
             PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
             break;
-        default:                      /* for messages that we don't deal with */
+    default:                      /* for messages that we don't deal with */
             return DefWindowProc (hwnd, message, wParam, lParam);
     }
 
     return 0;
 }
+
 void AddMenus(HWND hwnd)
 {
     hMenu=CreateMenu();
-    HMENU hFileMenu=CreateMenu();
-    HMENU hSubMenu=CreateMenu();
-
-    AppendMenu(hSubMenu,MF_STRING,SUB_MENU_TITLE,"ChangeTitle");
-    AppendMenu(hSubMenu,MF_STRING,NULL,"File");
-
-    AppendMenu(hFileMenu,MF_POPUP,(UINT_PTR)hSubMenu,"New");
-    AppendMenu(hFileMenu,MF_STRING,FILE_MENU_OPEN,"Open");
-    AppendMenu(hFileMenu,MF_SEPARATOR,NULL,NULL);
-    AppendMenu(hFileMenu,MF_STRING,FILE_MENU_EXIT,"Exit");
-
-
-    AppendMenu(hMenu,MF_POPUP,(UINT_PTR)hFileMenu,"File");
-    AppendMenu(hMenu,MF_STRING,NULL,"Copy");
-
+    AppendMenu(hMenu,MF_STRING,MENU_ABOUT,"About");
+    AppendMenu(hMenu,MF_STRING,MENU_INSTRUCTIONS,"Instructions");
+    AppendMenu(hMenu,MF_STRING,MENU_EXIT,"Exit");
     SetMenu(hwnd,hMenu);
 }
 void AddControls(HWND hwnd)
 {
-    CreateWindow("static","Enter Word: ",WS_VISIBLE | WS_CHILD ,100,50,98,38,hwnd,NULL,NULL,NULL);
-    hWord=CreateWindow("edit","",WS_VISIBLE | WS_CHILD | WS_BORDER,200,50,98,38,hwnd,NULL,NULL,NULL);
-    CreateWindow("static","Meaning: ",WS_VISIBLE | WS_CHILD ,100,90,98,38,hwnd,NULL,NULL,NULL);
-    hMeaning=CreateWindow("edit","",WS_VISIBLE | WS_CHILD | WS_BORDER,200,90,98,38,hwnd,NULL,NULL,NULL);
-    CreateWindow("button","Generate ",WS_VISIBLE | WS_CHILD ,150,140,98,38,hwnd,(HMENU)SUB_MENU_TITLE,NULL,NULL);
-    hOut=CreateWindow("edit","",WS_VISIBLE | WS_CHILD | WS_BORDER,170,190,300,200,hwnd,NULL,NULL,NULL);
+    CreateWindow("button","Add Word ",WS_VISIBLE | WS_CHILD ,150,180,98,38,hwnd,(HMENU)MENU_ADD,NULL,NULL);
+    CreateWindow("button","Search Word ",WS_VISIBLE | WS_CHILD ,300,180,98,38,hwnd,(HMENU)MENU_SEARCH,NULL,NULL);
+    CreateWindow("button","Delete Word ",WS_VISIBLE | WS_CHILD ,225,250,98,38,hwnd,(HMENU)MENU_DELETE,NULL,NULL);
+    hLogo=CreateWindow("static",NULL,WS_VISIBLE | WS_CHILD | SS_BITMAP ,225,50,100,100,hwnd,NULL,NULL,NULL);
+    SendMessage(hLogo,STM_SETIMAGE,IMAGE_BITMAP,(LPARAM)hDict);
 }
+void loadImages()
+{
+    hDict=(HBITMAP)LoadImage(NULL,"dict.bmp",IMAGE_BITMAP,100,100,LR_LOADFROMFILE);
+}
+
 

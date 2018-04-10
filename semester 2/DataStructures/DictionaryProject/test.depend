@@ -1,12 +1,50 @@
 # depslib dependency file v1.0
-1523298428 source:c:\users\tarun\desktop\codeblocks\test\main.cpp
+1523360893 source:c:\users\tarun\desktop\codeblocks\test\main.cpp
 	<windows.h>
 	<stdlib.h>
 	"dictionary.h"
+	"about.h"
+	"instruction.h"
+	"add.h"
+	"search.h"
 	<cstring>
 	<iostream>
 
 1523304389 c:\users\tarun\desktop\codeblocks\test\dictionary.h
 	<iostream>
 	<cstring>
+
+1523358991 source:c:\users\tarun\desktop\codeblocks\test\instruction.cpp
+	"instruction.h"
+	<windows.h>
+	<iostream>
+
+1523360965 source:c:\users\tarun\desktop\codeblocks\test\about.cpp
+	"about.h"
+	<windows.h>
+	<iostream>
+
+1523357198 c:\users\tarun\desktop\codeblocks\test\about.cpp
+	<windows.h>
+
+1523358138 c:\users\tarun\desktop\codeblocks\test\instruction.cpp
+	<windows.h>
+
+1523359079 c:\users\tarun\desktop\codeblocks\test\instruction.h
+	<windows.h>
+
+1523359659 c:\users\tarun\desktop\codeblocks\test\about.h
+	<windows.h>
+
+1523359950 source:c:\users\tarun\desktop\codeblocks\test\add.cpp
+	"add.h"
+	<windows.h>
+	<iostream>
+
+1523359699 c:\users\tarun\desktop\codeblocks\test\add.h
+	<windows.h>
+
+1523360142 c:\users\tarun\desktop\codeblocks\test\search.h
+
+1523360155 source:c:\users\tarun\desktop\codeblocks\test\search.cpp
 
