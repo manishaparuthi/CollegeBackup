@@ -35,7 +35,7 @@ void Trie::insert(string key,char* meaning)
 
     for (int i = 0; i < key.length(); i++)
     {
-        //cout<<"in for";
+        // cout<<"in for";
         //cout<<"key[i]: "<<key[i];
 
         int index = key[i] - 'a';
