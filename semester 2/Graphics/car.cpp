@@ -86,7 +86,7 @@ int main()
         {
 
             setfillstyle(SOLID_FILL,YELLOW);
-            floodfill(midx+230, midy-50,7);
+            floodfill(midx+230, midy,7);
             car(i);
             getch();
 
