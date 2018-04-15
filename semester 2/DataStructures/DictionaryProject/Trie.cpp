@@ -6,8 +6,6 @@ using namespace std;
 #define ALPHABET_SIZE 26
 #include "dictionary.h"
 // trie node
-
-
 // Returns new trie node (initialized to NULLs)
 Trie:: Trie()
 {
