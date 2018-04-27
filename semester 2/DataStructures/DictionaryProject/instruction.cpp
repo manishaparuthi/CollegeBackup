@@ -2,6 +2,7 @@
 #include <windows.h>
 using namespace std;
 #include<iostream>
+#define INOK 8
 void RegisterInstructionClass(HINSTANCE hInst)
 {
     WNDCLASSEX Instruction ={0};
@@ -34,6 +35,17 @@ LRESULT CALLBACK InstructionProcedure (HWND hwnd, UINT message, WPARAM wParam, L
         AddInstructionInfo(hwnd);
         break;
 
+    case WM_COMMAND:
+        {
+            switch(wParam)
+            {
+            case INOK:
+              DestroyWindow(hwnd);
+              MessageBeep(MB_OK);
+              break;
+            }
+        }
+        break;
 
     case WM_DESTROY:
             DestroyWindow(hwnd);
@@ -48,11 +60,13 @@ LRESULT CALLBACK InstructionProcedure (HWND hwnd, UINT message, WPARAM wParam, L
 
 void displayInstruction(HWND hWnd)
 {
-    CreateWindow("InstructionClass","Instruction",WS_VISIBLE | WS_OVERLAPPEDWINDOW,200,200,400,400,hWnd,NULL,NULL,NULL);
+    CreateWindow("InstructionClass","Instruction",WS_VISIBLE | WS_OVERLAPPEDWINDOW,100,100,400,400,hWnd,NULL,NULL,NULL);
 }
 void AddInstructionInfo(HWND hwnd)
 {
     char* str="hello welcome to the Instruction window";
-    CreateWindow("static",str,WS_VISIBLE | WS_CHILD ,20,20,100,100,hwnd,NULL,NULL,NULL);
+    //CreateWindow("static",str,WS_VISIBLE | WS_CHILD ,20,20,100,100,hwnd,NULL,NULL,NULL);
+    CreateWindow("static",str,WS_VISIBLE | WS_CHILD ,20,20,300,300,hwnd,NULL,NULL,NULL);
+    CreateWindow("button","OK,Got it! ",WS_VISIBLE | WS_CHILD ,180,180,80,40,hwnd,(HMENU)INOK,NULL,NULL);
 }
 

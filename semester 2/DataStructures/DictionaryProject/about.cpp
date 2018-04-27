@@ -2,7 +2,7 @@
 #include<windows.h>
 using namespace std;
 
-#define OK 7
+#define ABOK 7
 #include<iostream>
 LRESULT CALLBACK AboutProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -15,7 +15,8 @@ LRESULT CALLBACK AboutProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
         {
             switch(wParam)
             {
-            case OK:
+            case ABOK:
+              DestroyWindow(hwnd);
               MessageBeep(MB_OK);
               break;
             }
@@ -59,14 +60,14 @@ void RegisterAboutClass(HINSTANCE hInst)
 }
 void displayAbout(HWND hWnd)
 {
-    CreateWindow("AboutClass","About",WS_VISIBLE | WS_OVERLAPPEDWINDOW,200,200,400,400,hWnd,NULL,NULL,NULL);
+    CreateWindow("AboutClass","About",WS_VISIBLE | WS_OVERLAPPEDWINDOW,100,100,400,500,hWnd,NULL,NULL,NULL);
 }
 
 
 void AddAboutInfo(HWND hwnd)
 {
-    char* str="hello welcome to the about window";
-    HWND hAbout= CreateWindow("static",str,WS_VISIBLE | WS_CHILD ,20,20,300,300,hwnd,NULL,NULL,NULL);
-    CreateWindow("button","OK ",WS_VISIBLE | WS_CHILD | MB_OK ,80,80,80,40,hAbout,(HMENU)OK,NULL,NULL);
+    char* str="Hello welcome to the Dictionary.This is like modern dictionary where we can search add and delete words according to our needs. ";
+    CreateWindow("static",str,WS_VISIBLE | WS_CHILD ,20,20,300,300,hwnd,NULL,NULL,NULL);
+    CreateWindow("button","OK ",WS_VISIBLE | WS_CHILD ,180,180,80,40,hwnd,(HMENU)ABOK,NULL,NULL);
 
 }

@@ -1,8 +1,10 @@
 // C++ implementation of search and insert
 // operations on Trie
-#include <iostream>
-using namespace std;
+#ifndef DICT
+#define DICT
 #include<cstring>
+using namespace std;
+#include <iostream>
 #define ALPHABET_SIZE 26
 
 // trie node
@@ -14,12 +16,12 @@ class TrieNode
     // isEndOfWord is true if the node represents
     // end of a word
      bool isEndOfWord;
-     char* description;//value represents the meaning of the word
+     char description[20];//value represents the meaning of the word
     friend class Trie;
 
 
 };
-extern TrieNode node;
+//extern TrieNode node;
 class Trie
 {
     TrieNode* root;
@@ -28,33 +30,34 @@ class Trie
     {
         root=getNode();
     }
-    TrieNode* getNode(void);
-    void insert( string key,char* meaning);
-    char* search( string key);
-};
-
-
-TrieNode* Trie :: getNode(void)
-{
+    TrieNode* getNode(void)
+    {
     TrieNode *pNode =  new TrieNode();
     pNode->isEndOfWord = false;
-    pNode->description="word not found";
+   /* (pNode->description)[0]='w';
+    (pNode->description)[1]='o';
+    (pNode->description)[2]='r';
+    (pNode->description)[3]='d';
+    (pNode->description)[4]='n';
+    (pNode->description)[5]='o';
+    (pNode->description)[6]='t';
+    (pNode->description)[7]='f';
+    (pNode->description)[8]='o';
+    (pNode->description)[9]='u';
+    (pNode->description)[10]='n';
+    (pNode->description)[11]='d';*/
+    pNode->description[0]='/0';
     for (int i = 0; i < ALPHABET_SIZE; i++)
     {
         pNode->children[i] = NULL;
     }
     return pNode;
-}
+    }
+    void insert( char key[],char meaning[])
+    {
+        TrieNode* pCrawl = root;
 
-// If not present, inserts key into trie
-// If the key is prefix of trie node, just
-// marks leaf node
-void Trie::insert(string key,char* meaning)
-{
-
-    TrieNode* pCrawl = root;
-
-    for (int i = 0; i < key.length(); i++)
+    for (int i = 0; i < key[i]!='\0'; i++)
     {
         //cout<<"in for";
         //cout<<"key[i]: "<<key[i];
@@ -66,7 +69,7 @@ void Trie::insert(string key,char* meaning)
 
         if (pCrawl->children[index]==NULL)
         {
-           ;
+
             pCrawl->children[index] = getNode();
         }
         pCrawl = pCrawl->children[index];
@@ -75,27 +78,44 @@ void Trie::insert(string key,char* meaning)
 
     // mark last node as leaf
     pCrawl->isEndOfWord = true;
-    pCrawl->description=meaning;
-}
+    for(int i=0;meaning[i]!='\0';i++)
+    (pCrawl->description)[i]=meaning[i];
+    }
+    bool search( char key[],char meaning[])
+    {
 
-// Returns true if key presents in trie, else
-// false
-char* Trie :: search( string key)
-{
     //char* neg="word not found";
     TrieNode *pCrawl = root;
 
-    for (int i = 0; i < key.length(); i++)
+    for (int i = 0; key[i]!='\0'; i++)
     {
         int index = key[i] - 'a';
         if (!pCrawl->children[index])
-            return "wordnotFound";
+        {
+            meaning[0]='w';
+            meaning[1]='o';
+            meaning[2]='r';
+            meaning[3]='d';
+            meaning[4]='m';
+            meaning[5]='o';
+            meaning[6]='t';
+            meaning[7]='f';
+            meaning[8]='o';
+            meaning[9]='u';
+            meaning[10]='n';
+            meaning[11]='d';
+            return false;
+        }
 
         pCrawl = pCrawl->children[index];
     }
-    //if(pCrawl != NULL && pCrawl->isEndOfWord&&pCrawl)
-        return (pCrawl->description);
-
+    if(pCrawl != NULL && pCrawl->isEndOfWord&&pCrawl)
+        {
+            for(int i=0;(pCrawl->description)[i]!='\0';i++)
+             meaning[i]=(pCrawl->description)[i];//=meaning[i];
+             return true;
+        }
 }
+};
 
-
+#endif

@@ -2,6 +2,12 @@
 #include<windows.h>
 using namespace std;
 #include<iostream>
+#include<fstream>
+#include "dictionary.cpp"
+#define ADD_WORD 10
+extern Trie dictionary;
+HWND hWordAdd,hMessg;
+HWND hMeaningAdd;
 LRESULT CALLBACK AddProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)                  /* handle the messages */
@@ -14,9 +20,45 @@ LRESULT CALLBACK AddProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lP
         {
             switch(wParam)
             {
-            case 1:
-              DestroyWindow(hwnd);
-              break;
+            case ADD_WORD:
+               char word[20];
+               char meaning[20];
+               GetWindowText(hWordAdd,word,20);
+               GetWindowText(hMeaningAdd,meaning,20);
+               cout<<"word: "<<word;
+               cout<<"meaninng : "<<meaning;
+                dictionary.insert("is","am");
+                fstream f;
+                f.open("wordmng.txt", ios::out | ios::app);
+                char var[40] = {};
+                if(!f)
+                {
+                    cerr<<"Unable to open file .\n";
+                    exit(0);
+                }
+                int j=0;
+                int k = 0;
+                for(int i=0;word[i]!='\0';i++)
+                {
+                    var[j]=word[i];
+                    j++;
+                }
+                var[j]='-';
+                j++;
+                for( k=0;meaning[k]!='\0';k++)
+                {
+                    var[j]=meaning[k];
+                    j++;
+                }
+                var[j]=',';
+                j++;
+                var[j]='\0';
+                f << var << endl;
+                cout << var;
+                f.close();
+                dictionary.insert(word,meaning);
+                SetWindowText(hMessg,"Word Added to the dictionary");
+                break;
             }
         }
         break;
@@ -64,13 +106,14 @@ void displayAdd(HWND hWnd)
 
 void AddAddInfo(HWND hwnd)
 {
-    char* str="Add Word";
-     HWND hAbout= CreateWindow("static",str,WS_VISIBLE | WS_CHILD ,20,20,100,100,hwnd,NULL,NULL,NULL);
-    CreateWindow("static","Enter Word: ",WS_VISIBLE | WS_CHILD ,20,60,80,30,hwnd,NULL,NULL,NULL);
-    CreateWindow("edit",NULL,WS_VISIBLE | WS_CHILD | WS_BORDER,100,60,80,30,hwnd,NULL,NULL,NULL);
-      CreateWindow("static","Enter Meaning: ",WS_VISIBLE | WS_CHILD ,20,100,80,30,hwnd,NULL,NULL,NULL);
-      CreateWindow("edit",NULL,WS_VISIBLE | WS_CHILD | WS_BORDER,100,140,80,30,hwnd,NULL,NULL,NULL);
-    CreateWindow("button","Add Word ",WS_VISIBLE | WS_CHILD | MB_OK ,200,200,80,40,hAbout,(HMENU)1,NULL,NULL);
+    char* str="AddWord";
+    HWND hAdd= CreateWindow("static",str,WS_VISIBLE | WS_CHILD ,20,20,100,100,hwnd,NULL,NULL,NULL);
+    CreateWindow("static","Enter Word: ",WS_VISIBLE | WS_CHILD ,40,60,80,30,hwnd,NULL,NULL,NULL);
+    hWordAdd=CreateWindow("edit",NULL,WS_VISIBLE | WS_CHILD | WS_BORDER | WM_HSCROLL,120,60,120,45,hwnd,NULL,NULL,NULL);
+    CreateWindow("static","Enter Meaning: ",WS_VISIBLE | WS_CHILD ,40,140,80,40,hwnd,NULL,NULL,NULL);
+    hMeaningAdd=CreateWindow("edit",NULL,WS_VISIBLE | WS_CHILD | WS_BORDER,120,140,120,45,hwnd,NULL,NULL,NULL);
+    CreateWindow("button","Add Word ",WS_VISIBLE | WS_CHILD | MB_OK ,200,250,80,40,hwnd,(HMENU)ADD_WORD,NULL,NULL);
+    //HWND hMessg= CreateWindow("static",NULL,WS_VISIBLE | WS_CHILD ,200,300,100,100,hwnd,NULL,NULL,NULL);
 
 }
 

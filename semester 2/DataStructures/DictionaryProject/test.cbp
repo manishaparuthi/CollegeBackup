@@ -36,8 +36,19 @@
 			<Add library="user32" />
 			<Add library="kernel32" />
 		</Linker>
+		<Unit filename="about.cpp" />
+		<Unit filename="about.h" />
+		<Unit filename="add.cpp" />
+		<Unit filename="add.h" />
+		<Unit filename="delete.cpp" />
+		<Unit filename="delete.h" />
+		<Unit filename="dicti.h" />
 		<Unit filename="dictionary.h" />
+		<Unit filename="instruction.cpp" />
+		<Unit filename="instruction.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="search.cpp" />
+		<Unit filename="search.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

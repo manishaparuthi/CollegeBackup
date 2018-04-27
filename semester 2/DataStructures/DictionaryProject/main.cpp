@@ -1,10 +1,12 @@
 #include <windows.h>
 #include<stdlib.h>
-#include "dictionary.h"
+#include<fstream>
+#include "dicti.h"
 #include "about.h"
 #include "instruction.h"
 #include "add.h"
 #include "search.h"
+#include "delete.h"
 #include<cstring>
 #include<iostream>
 using namespace std;
@@ -15,6 +17,7 @@ using namespace std;
 #define MENU_SEARCH 5
 #define MENU_DELETE 6
 #define OK 7
+#define MENU_CREATE 13
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 void AddMenus(HWND);
@@ -23,7 +26,7 @@ void loadImages();
 HMENU hMenu;
 HWND hWord,hMeaning,hLogo,hOut;
 HBITMAP hSearch,hDict;
-Trie dictionary;
+extern Trie dictionary;
 HINSTANCE hinst;
 /*  Make the class name into a global variable  */
 char szClassName[ ] = "Trie: Dictionary";
@@ -38,7 +41,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     WNDCLASSEX wincl;        /* Data structure for the windowclass */
 
 
-    dictionary.insert("the","meaningThe");
+    //dictionary.insert("the","meaningThe");
 
     /* The Window structure */
     wincl.hInstance = hThisInstance;
@@ -65,7 +68,8 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     RegisterAboutClass(hThisInstance);
     RegisterInstructionClass(hThisInstance);
     RegisterAddClass(hThisInstance);
-
+    RegisterSearchClass(hThisInstance);
+    RegisterDeleteClass(hThisInstance);
    hwnd= CreateWindowEx (
            0,                   /* Extended possibilites for variation */
            szClassName,         /* Classname */
@@ -106,6 +110,9 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     switch (message)                  /* handle the messages */
     {
     case WM_CREATE:
+        //hDict=(HBITMAP)LoadImage(NULL,"dict",IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
+        //hLogo=CreateWindow("static",NULL,WS_VISIBLE | WS_CHILD | SS_BITMAP ,225,50,100,100,hwnd,NULL,NULL,NULL);
+        //SendMessage(hLogo,STM_SETIMAGE,IMAGE_BITMAP,(LPARAM)hDict);
         loadImages();
         AddMenus(hwnd);
         AddControls(hwnd);
@@ -127,10 +134,48 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 MessageBeep(MB_OK);
                 break;
             case MENU_SEARCH:
+                displaySearch(hwnd);
                 MessageBeep(MB_OK);
                 break;
             case MENU_DELETE:
+                displayDelete(hwnd);
                 MessageBeep(MB_OK);
+                break;
+            case MENU_CREATE:
+                ifstream f1;
+                f1.open("wordmng.txt",ios::in);
+                if(!f1)
+                {
+                    cerr<<"Unable to open file .\n";
+                    exit(0);
+                }
+                string x;
+                //cout<<"\n The content of the file is : \n";
+                int i;
+                while(!f1.eof())
+                {
+                    getline(f1,x);
+                    i=0;
+                    char word[20]={};
+                    char meaning[20]={};
+                    while(x[i]!='-')
+                    {
+                        //cout<<"x[i]: "<<x[i];
+                        word[i]=x[i];
+                        i++;
+                    }
+                    i++;
+                    int j=0;
+                    while(x[i]!=',')
+                    {
+                        //cout<<"x[i]: "<<x[i];
+                        meaning[j]=x[i];
+                        j++;
+                        i++;
+                    }
+                    dictionary.insert(word,meaning);
+                    }
+                f1.close();
                 break;
             }
 
@@ -158,13 +203,17 @@ void AddControls(HWND hwnd)
 {
     CreateWindow("button","Add Word ",WS_VISIBLE | WS_CHILD ,150,180,98,38,hwnd,(HMENU)MENU_ADD,NULL,NULL);
     CreateWindow("button","Search Word ",WS_VISIBLE | WS_CHILD ,300,180,98,38,hwnd,(HMENU)MENU_SEARCH,NULL,NULL);
-    CreateWindow("button","Delete Word ",WS_VISIBLE | WS_CHILD ,225,250,98,38,hwnd,(HMENU)MENU_DELETE,NULL,NULL);
+    //CreateWindow("button","Delete Word ",WS_VISIBLE | WS_CHILD ,225,250,98,38,hwnd,(HMENU)MENU_DELETE,NULL,NULL);
+    CreateWindow("button","CreateDictionary ",WS_VISIBLE | WS_CHILD ,225,300,108,38,hwnd,(HMENU)MENU_CREATE,NULL,NULL);
     hLogo=CreateWindow("static",NULL,WS_VISIBLE | WS_CHILD | SS_BITMAP ,225,50,100,100,hwnd,NULL,NULL,NULL);
     SendMessage(hLogo,STM_SETIMAGE,IMAGE_BITMAP,(LPARAM)hDict);
 }
 void loadImages()
 {
-    hDict=(HBITMAP)LoadImage(NULL,"dict.bmp",IMAGE_BITMAP,100,100,LR_LOADFROMFILE);
+    hDict=(HBITMAP)LoadImage(NULL,"C:/Users/Tarun/Desktop/codeblocks/test/dict.png",IMAGE_BITMAP,0,0,LR_LOADFROMFILE);
+    if(hDict==NULL) {
+        cout<<"\nImage is not loading...";
+    }
 }
 
 

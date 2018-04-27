@@ -1,25 +1,27 @@
 # depslib dependency file v1.0
-1523360893 source:c:\users\tarun\desktop\codeblocks\test\main.cpp
+1524637193 source:c:\users\tarun\desktop\codeblocks\test\main.cpp
 	<windows.h>
 	<stdlib.h>
-	"dictionary.h"
+	<fstream>
+	"dicti.h"
 	"about.h"
 	"instruction.h"
 	"add.h"
 	"search.h"
+	"delete.h"
 	<cstring>
 	<iostream>
 
-1523304389 c:\users\tarun\desktop\codeblocks\test\dictionary.h
-	<iostream>
+1524639284 c:\users\tarun\desktop\codeblocks\test\dictionary.h
 	<cstring>
+	<iostream>
 
-1523358991 source:c:\users\tarun\desktop\codeblocks\test\instruction.cpp
+1523801232 source:c:\users\tarun\desktop\codeblocks\test\instruction.cpp
 	"instruction.h"
 	<windows.h>
 	<iostream>
 
-1523360965 source:c:\users\tarun\desktop\codeblocks\test\about.cpp
+1523801217 source:c:\users\tarun\desktop\codeblocks\test\about.cpp
 	"about.h"
 	<windows.h>
 	<iostream>
@@ -36,15 +38,36 @@
 1523359659 c:\users\tarun\desktop\codeblocks\test\about.h
 	<windows.h>
 
-1523359950 source:c:\users\tarun\desktop\codeblocks\test\add.cpp
+1524636972 source:c:\users\tarun\desktop\codeblocks\test\add.cpp
 	"add.h"
 	<windows.h>
 	<iostream>
+	<fstream>
+	"dictionary.cpp"
 
 1523359699 c:\users\tarun\desktop\codeblocks\test\add.h
 	<windows.h>
 
-1523360142 c:\users\tarun\desktop\codeblocks\test\search.h
+1523367248 c:\users\tarun\desktop\codeblocks\test\search.h
+	<windows.h>
 
-1523360155 source:c:\users\tarun\desktop\codeblocks\test\search.cpp
+1524633996 source:c:\users\tarun\desktop\codeblocks\test\search.cpp
+	"search.h"
+	<windows.h>
+	<iostream>
+	"dicti.h"
+
+1523801960 source:c:\users\tarun\desktop\codeblocks\test\delete.cpp
+	"delete.h"
+	<windows.h>
+	<iostream>
+
+1523381399 c:\users\tarun\desktop\codeblocks\test\delete.h
+	<windows.h>
+
+1523822995 c:\users\tarun\desktop\codeblocks\test\dicti.h
+	"dictionary.h"
+
+1523823783 c:\users\tarun\desktop\codeblocks\test\dictionary.cpp
+	"dictionary.h"
 
